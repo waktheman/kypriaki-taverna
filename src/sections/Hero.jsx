@@ -42,7 +42,7 @@ export default function Hero() {
 
         <Reveal as="h1" delay={120} className="mt-6 font-display text-6xl font-semibold leading-[0.95] sm:text-8xl">
           <span className="shiny-text block">Kypriaki</span>
-          <span className="mt-1 block italic text-gold">Taverna</span>
+          <span className="-mt-1 block italic text-gold">Taverna</span>
         </Reveal>
 
         <Reveal

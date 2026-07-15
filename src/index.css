@@ -52,6 +52,8 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* Extra bottom room so descenders (y, p) aren't clipped by the text box */
+  padding-bottom: 0.12em;
   animation: shine 6s var(--ease-premium) infinite;
 }
 @keyframes shine {
