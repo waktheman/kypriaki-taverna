@@ -29,6 +29,13 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
+/* Fixed full-screen textured layers force costly repaints while scrolling on
+   phones; the grain is barely perceptible at that size anyway. */
+@media (max-width: 639px) {
+  .grain-overlay {
+    display: none;
+  }
+}
 
 /* ---------- Skip link ---------- */
 .skip-link {
@@ -118,13 +125,13 @@ body {
    enhancement, so content never depends on an observer firing. */
 .reveal {
   transition:
-    opacity 0.8s var(--ease-premium),
-    transform 0.8s var(--ease-premium);
+    opacity 0.65s var(--ease-premium),
+    transform 0.65s var(--ease-premium);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.reveal-hidden {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(18px);
   will-change: transform, opacity;
 }
 
@@ -137,7 +144,8 @@ body {
 .marquee:hover .marquee-track,
 .marquee:active .marquee-track,
 .marquee:focus-within .marquee-track,
-.marquee.is-paused .marquee-track {
+.marquee.is-paused .marquee-track,
+.marquee.is-offscreen .marquee-track {
   animation-play-state: paused;
 }
 @keyframes marquee {

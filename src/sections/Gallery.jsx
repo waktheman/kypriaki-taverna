@@ -76,8 +76,11 @@ export default function Gallery() {
               >
                 <img
                   src={img.src}
+                  srcSet={img.srcSet}
+                  sizes="(min-width: 1024px) 24vw, 48vw"
                   alt={img.alt}
                   loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 ease-premium group-hover:scale-105"
                 />
                 <div
@@ -102,7 +105,7 @@ export default function Gallery() {
         >
           <figure className="modal-enter max-h-[85vh] max-w-4xl" onClick={(e) => e.stopPropagation()}>
             <img
-              src={IMAGES.gallery[lightbox].src}
+              src={IMAGES.gallery[lightbox].full}
               alt={IMAGES.gallery[lightbox].alt}
               className="max-h-[78vh] w-auto rounded-2xl object-contain shadow-2xl"
             />

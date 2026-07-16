@@ -27,8 +27,8 @@ export default function Hero() {
       {/* Ember glow */}
       <div className="ember-glow pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      {/* Smoke wisps */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {/* Smoke wisps — desktop only: large animated blurs are expensive on phone GPUs */}
+      <div className="pointer-events-none absolute inset-0 hidden overflow-hidden sm:block" aria-hidden="true">
         <div className="smoke-wisp left-[18%] h-64 w-40" />
         <div className="smoke-wisp left-[48%] h-72 w-48" />
         <div className="smoke-wisp left-[72%] h-56 w-36" />

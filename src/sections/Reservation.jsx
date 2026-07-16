@@ -1,28 +1,35 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { z } from 'zod'
 import Reveal from '../components/Reveal.jsx'
 
 const WHATSAPP_NUMBER = '35796239471'
 
-const schema = z.object({
-  name: z.string().trim().min(2, 'Please tell us your name.'),
-  email: z.string().trim().email('That email doesn’t look right.'),
-  phone: z
-    .string()
-    .trim()
-    .regex(/^\+?[0-9\s()-]{7,17}$/, 'Please enter a valid phone number.'),
-  guests: z.number().int().min(1).max(12, 'For parties over 12, please call us.'),
-  date: z
-    .string()
-    .min(1, 'Pick a date for your visit.')
-    .refine((d) => {
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      return new Date(d + 'T00:00:00') >= today
-    }, 'Please choose a date in the future.'),
-  time: z.string().min(1, 'Choose a time.'),
-  requests: z.string().trim().max(400, 'Please keep requests under 400 characters.').optional(),
-})
+// Zod is only needed at submit time — load it lazily so it stays out of the
+// initial bundle (the form is the last section most visitors reach).
+let schemaPromise
+const getSchema = () => {
+  schemaPromise ??= import('zod').then(({ z }) =>
+    z.object({
+      name: z.string().trim().min(2, 'Please tell us your name.'),
+      email: z.string().trim().email('That email doesn’t look right.'),
+      phone: z
+        .string()
+        .trim()
+        .regex(/^\+?[0-9\s()-]{7,17}$/, 'Please enter a valid phone number.'),
+      guests: z.number().int().min(1).max(12, 'For parties over 12, please call us.'),
+      date: z
+        .string()
+        .min(1, 'Pick a date for your visit.')
+        .refine((d) => {
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          return new Date(d + 'T00:00:00') >= today
+        }, 'Please choose a date in the future.'),
+      time: z.string().min(1, 'Choose a time.'),
+      requests: z.string().trim().max(400, 'Please keep requests under 400 characters.').optional(),
+    }),
+  )
+  return schemaPromise
+}
 
 const TIME_SLOTS = []
 for (let h = 12; h <= 22; h++) {
@@ -168,8 +175,9 @@ export default function Reservation() {
       })
     : ''
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const schema = await getSchema()
     const result = schema.safeParse(form)
     if (!result.success) {
       const fieldErrors = {}

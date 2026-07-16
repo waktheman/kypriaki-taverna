@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
 import { TESTIMONIALS } from '../data/menu.js'
 
@@ -40,6 +40,19 @@ function ReviewCard({ name, text }) {
 
 export default function Testimonials() {
   const [paused, setPaused] = useState(false)
+  const [offscreen, setOffscreen] = useState(false)
+  const marqueeRef = useRef(null)
+
+  // Don't burn compositor time animating the marquee while it's off-screen
+  useEffect(() => {
+    const el = marqueeRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(([entry]) => setOffscreen(!entry.isIntersecting), {
+      rootMargin: '80px',
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   return (
     <section className="overflow-hidden bg-cream py-24 sm:py-32">
@@ -59,7 +72,8 @@ export default function Testimonials() {
       {/* Infinite marquee; pauses on hover, touch, focus, or the pause button */}
       <Reveal delay={200}>
         <div
-          className={`marquee relative mt-14 ${paused ? 'is-paused' : ''}`}
+          ref={marqueeRef}
+          className={`marquee relative mt-14 ${paused ? 'is-paused' : ''} ${offscreen ? 'is-offscreen' : ''}`}
           aria-label="Guest reviews carousel"
         >
           <div

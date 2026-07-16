@@ -152,34 +152,45 @@ export const MENU_SECTIONS = [
   },
 ]
 
+// Wine/gallery card images: right-sized srcset so phones don't pull 1200px files
+const card = (id) => ({
+  src: `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=70`,
+  srcSet: [480, 800, 1200]
+    .map((w) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70 ${w}w`)
+    .join(', '),
+})
+
 export const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1920&q=75',
-  about: '/images/about.jpg',
-  commandaria:
-    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=75',
-  kleftiko:
-    'https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1200&q=75',
+  // Poster only shows until the (dimmed) video starts — modest size is plenty
+  hero: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=65',
+  about: '/images/about.webp',
+  commandaria: card('photo-1510812431401-41d2bd2722f3'),
+  kleftiko: card('photo-1600891964092-4316c288032e'),
   souvlaVideoPoster: '/images/souvla-poster.jpg',
   kleftikoVideoPoster: '/images/kleftiko-poster.jpg',
   commandariaVideoPoster: '/images/commandaria-poster.jpg',
   gallery: [
     {
-      src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1000&q=75',
+      ...card('photo-1559339352-11d035aa65de'),
+      full: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1400&q=75',
       alt: 'Outdoor seating under vines at Kypriaki Taverna',
       tall: true,
     },
     {
-      src: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=75',
+      ...card('photo-1556910103-1c02745aae4d'),
+      full: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1400&q=75',
       alt: 'Our chef preparing the evening meze',
       tall: false,
     },
     {
-      src: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1000&q=75',
+      ...card('photo-1555939594-58d7cb561ad1'),
+      full: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1400&q=75',
       alt: 'Souvla turning slowly over Cypriot charcoal',
       tall: true,
     },
     {
-      src: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=75',
+      ...card('photo-1470252649378-9c29740c9fa8'),
+      full: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1400&q=75',
       alt: 'Sunset over the terrace in Paphos',
       tall: false,
     },

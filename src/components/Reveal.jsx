@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { onViewportChange } from '../lib/onViewportChange.js'
 
 /**
  * Reveal-on-scroll wrapper. Content is visible by default; the hidden state is
@@ -7,8 +8,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
  *
  * - In-view elements at mount animate in on the next frame (load stagger via
  *   `delay`), with a timeout failsafe so nothing can stay hidden.
- * - Below-fold elements reveal via IntersectionObserver, with a scroll/resize
- *   fallback in case the observer misbehaves.
+ * - Below-fold elements reveal via IntersectionObserver (pre-triggered ~120px
+ *   early so fast scrolling doesn't see content pop in), backed by a single
+ *   shared scroll/resize checker instead of per-element listeners.
  */
 export default function Reveal({ as: Tag = 'div', delay = 0, className = '', children, ...rest }) {
   const ref = useRef(null)
@@ -40,26 +42,18 @@ export default function Reveal({ as: Tag = 'div', delay = 0, className = '', chi
     const reveal = () => setHidden(false)
     const io = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && reveal(),
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+      { threshold: 0.01, rootMargin: '0px 0px 120px 0px' },
     )
     io.observe(el)
 
-    // Fallback: reveal on any scroll/resize that puts the element on screen.
-    let raf = 0
-    const check = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect()
-        if (r.top < window.innerHeight && r.bottom > 0) reveal()
-      })
-    }
-    window.addEventListener('scroll', check, { passive: true })
-    window.addEventListener('resize', check, { passive: true })
+    // Fallback via the shared checker, in case the observer misbehaves.
+    const unsubscribe = onViewportChange(() => {
+      const r = el.getBoundingClientRect()
+      if (r.top < window.innerHeight + 120 && r.bottom > 0) reveal()
+    })
     return () => {
       io.disconnect()
-      window.removeEventListener('scroll', check)
-      window.removeEventListener('resize', check)
-      cancelAnimationFrame(raf)
+      unsubscribe()
     }
   }, [hidden])
 

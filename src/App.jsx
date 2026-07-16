@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
-import Menu from './pages/Menu.jsx'
-import NotFound from './pages/NotFound.jsx'
+
+// Code-split secondary routes so the homepage bundle stays lean
+const Menu = lazy(() => import('./pages/Menu.jsx'))
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
 export default function App() {
   const { pathname, hash } = useLocation()
@@ -39,11 +41,13 @@ export default function App() {
       <div className="grain-overlay" aria-hidden="true" />
       <Navbar />
       <main id="content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen bg-cream" aria-hidden="true" />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
     </>

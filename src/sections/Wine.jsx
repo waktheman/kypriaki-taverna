@@ -95,9 +95,12 @@ export default function Wine() {
                 className="group relative block aspect-[4/5] w-full overflow-hidden rounded-2xl text-left sm:aspect-[3/4]"
               >
                 <img
-                  src={c.image}
+                  src={c.image.src}
+                  srcSet={c.image.srcSet}
+                  sizes="(min-width: 768px) 44vw, 90vw"
                   alt={c.alt}
                   loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-premium group-hover:scale-105"
                 />
                 <div
@@ -135,7 +138,9 @@ export default function Wine() {
             className="modal-enter grid max-h-[88vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-cream text-charcoal shadow-2xl sm:grid-cols-2"
           >
             <img
-              src={card.image}
+              src={card.image.src}
+              srcSet={card.image.srcSet}
+              sizes="(min-width: 640px) 24rem, 0px"
               alt={card.alt}
               className="hidden h-full max-h-[88vh] w-full object-cover sm:block"
             />
