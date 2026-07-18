@@ -23,9 +23,12 @@ export default function Visit() {
         <div className="mt-14 grid gap-8 lg:grid-cols-5">
           {/* Map */}
           <Reveal className="overflow-hidden rounded-2xl shadow-sm lg:col-span-3">
+            {/* The old maps.google.com?output=embed URL now redirects through a
+                response with X-Frame-Options and renders blank; this /maps/embed
+                endpoint is the frameable one. */}
             <iframe
               title="Map to Kypriaki Taverna, Terpsithea Street, Paphos"
-              src="https://maps.google.com/maps?q=Terpsithea%20Street%2C%20Paphos%208011%2C%20Cyprus&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src="https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1sTerpsithea+Street,+Paphos+8011,+Cyprus!6i15"
               className="h-80 w-full border-0 lg:h-full lg:min-h-[26rem]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
