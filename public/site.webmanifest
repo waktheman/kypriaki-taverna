@@ -1,0 +1,22 @@
+{
+  "name": "Kypriaki Taverna",
+  "short_name": "Kypriaki",
+  "description": "Authentic Cypriot dining in Paphos — souvla over coal, garden-fresh meze, and Commandaria. Since 1962.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2B2B2B",
+  "theme_color": "#2B2B2B",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,34 +1,44 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
+import { SITE } from '../config.js'
 
-const WHATSAPP_NUMBER = '35796239471'
+const WHATSAPP_NUMBER = SITE.whatsapp
 
-// Zod is only needed at submit time — load it lazily so it stays out of the
-// initial bundle (the form is the last section most visitors reach).
-let schemaPromise
-const getSchema = () => {
-  schemaPromise ??= import('zod').then(({ z }) =>
-    z.object({
-      name: z.string().trim().min(2, 'Please tell us your name.'),
-      email: z.string().trim().email('That email doesn’t look right.'),
-      phone: z
-        .string()
-        .trim()
-        .regex(/^\+?[0-9\s()-]{7,17}$/, 'Please enter a valid phone number.'),
-      guests: z.number().int().min(1).max(12, 'For parties over 12, please call us.'),
-      date: z
-        .string()
-        .min(1, 'Pick a date for your visit.')
-        .refine((d) => {
-          const today = new Date()
-          today.setHours(0, 0, 0, 0)
-          return new Date(d + 'T00:00:00') >= today
-        }, 'Please choose a date in the future.'),
-      time: z.string().min(1, 'Choose a time.'),
-      requests: z.string().trim().max(400, 'Please keep requests under 400 characters.').optional(),
-    }),
-  )
-  return schemaPromise
+// Lightweight hand-rolled validation — a Zod dependency (~62 KB gzip) is
+// overkill for seven fields. Returns { success, errors, data } like safeParse.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_RE = /^\+?[0-9\s()-]{7,17}$/
+
+function validateReservation(form) {
+  const errors = {}
+  const name = form.name.trim()
+  const email = form.email.trim()
+  const phone = form.phone.trim()
+  const requests = (form.requests || '').trim()
+
+  if (name.length < 2) errors.name = 'Please tell us your name.'
+  if (!EMAIL_RE.test(email)) errors.email = 'That email doesn’t look right.'
+  if (!PHONE_RE.test(phone)) errors.phone = 'Please enter a valid phone number.'
+  if (!(Number.isInteger(form.guests) && form.guests >= 1 && form.guests <= 12)) {
+    errors.guests = 'For parties over 12, please call us.'
+  }
+  if (!form.date) {
+    errors.date = 'Pick a date for your visit.'
+  } else {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    if (new Date(form.date + 'T00:00:00') < today) {
+      errors.date = 'Please choose a date in the future.'
+    }
+  }
+  if (!form.time) errors.time = 'Choose a time.'
+  if (requests.length > 400) errors.requests = 'Please keep requests under 400 characters.'
+
+  return {
+    success: Object.keys(errors).length === 0,
+    errors,
+    data: { name, email, phone, guests: form.guests, date: form.date, time: form.time, requests },
+  }
 }
 
 const TIME_SLOTS = []
@@ -175,24 +185,18 @@ export default function Reservation() {
       })
     : ''
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    const schema = await getSchema()
-    const result = schema.safeParse(form)
+    const result = validateReservation(form)
     if (!result.success) {
-      const fieldErrors = {}
-      for (const issue of result.error.issues) {
-        const key = issue.path[0]
-        if (!fieldErrors[key]) fieldErrors[key] = issue.message
-      }
-      setErrors(fieldErrors)
+      setErrors(result.errors)
       return
     }
     setErrors({})
     const data = result.data
 
     const message =
-      `Yiasas! I'd like to reserve a table at Kypriaki Taverna.\n\n` +
+      `Yiasas! I'd like to reserve a table at ${SITE.fullName}.\n\n` +
       `Name: ${data.name}\n` +
       `Guests: ${data.guests}\n` +
       `Date: ${prettyDate}\n` +
@@ -224,7 +228,7 @@ export default function Reservation() {
         </Reveal>
         <Reveal as="p" delay={180} className="mx-auto mt-4 max-w-md text-center text-sm leading-relaxed text-charcoal/70">
           Confirmations arrive by WhatsApp within the hour. For parties over 12, call us on{' '}
-          <a href="tel:+35796239471" className="font-semibold text-terracotta-deep">+357 96 239 471</a>.
+          <a href={`tel:${SITE.phoneTel}`} className="font-semibold text-terracotta-deep">{SITE.phoneDisplay}</a>.
         </Reveal>
 
         {submitted ? (

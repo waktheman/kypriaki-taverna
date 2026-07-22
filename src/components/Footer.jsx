@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { SITE } from '../config.js'
 
 export default function Footer() {
   return (
@@ -7,13 +8,15 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <p className="font-display text-2xl font-semibold">
-            Kypriaki<span className="text-terracotta">.</span>
+            {SITE.name}<span className="text-terracotta">.</span>
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream/60">
             Authentic Cypriot traditions, modern touch — souvla over coal, garden-fresh meze, and
             Commandaria under the Paphos sky.
           </p>
-          <p className="mt-4 font-display text-sm italic text-gold">Est. 1962 · Paphos, Cyprus</p>
+          <p className="mt-4 font-display text-sm italic text-gold">
+            Est. {SITE.established} · {SITE.address.locality}, {SITE.address.country}
+          </p>
         </div>
 
         {/* Social */}
@@ -22,7 +25,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-2 text-sm">
             <li>
               <a
-                href="https://instagram.com/kypriakitaverna"
+                href={`https://instagram.com/${SITE.instagram}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-cream/70 transition-colors duration-200 ease-premium hover:text-gold"
@@ -32,7 +35,7 @@ export default function Footer() {
                   <circle cx="12" cy="12" r="4" />
                   <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
                 </svg>
-                @kypriakitaverna
+                @{SITE.instagram}
               </a>
             </li>
           </ul>
@@ -61,13 +64,13 @@ export default function Footer() {
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-cream/60">Visit</h3>
           <address className="mt-4 space-y-2 text-sm not-italic text-cream/70">
-            <p>Terpsithea Street</p>
-            <p>Paphos 8011, Cyprus</p>
+            <p>{SITE.address.street}</p>
+            <p>{SITE.address.locality} {SITE.address.postalCode}, {SITE.address.country}</p>
             <p className="pt-2">Mon–Sat · 12:00–23:00</p>
             <p>Sun · 12:00–22:00</p>
             <p className="pt-2">
-              <a href="tel:+35796239471" className="transition-colors duration-200 ease-premium hover:text-gold">
-                +357 96 239 471
+              <a href={`tel:${SITE.phoneTel}`} className="transition-colors duration-200 ease-premium hover:text-gold">
+                {SITE.phoneDisplay}
               </a>
             </p>
           </address>
@@ -76,7 +79,7 @@ export default function Footer() {
 
       <div className="border-t border-cream/10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-6 text-xs text-cream/60 sm:flex-row">
-          <p>© {new Date().getFullYear()} Kypriaki Taverna. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {SITE.fullName}. All rights reserved.</p>
           <p className="font-display italic">kali orexi — good appetite</p>
         </div>
       </div>

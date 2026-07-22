@@ -31,6 +31,10 @@ A Cypriot restaurant marketing site (Kypriaki Taverna, Paphos): Vite + React 19 
 - `src/components/Reveal.jsx` — scroll-reveal wrapper. Content is **visible by default**; the hidden state is added post-mount only, revealed via IntersectionObserver **plus** a scroll/resize fallback and a load-time failsafe timeout. This exists because IO doesn't fire in some renderers and sections used to ship blank. Never revert to "hidden until observer fires".
 - `src/components/LazyVideo.jsx` — all `<video>` elements go through this. `preload="none"`, muted/loop/playsInline, play/pause driven by IO with the same rect-check fallback, poster shown to reduced-motion users. Page-weight budget: total video payload is kept under ~10 MB.
 
+**Brand is centralized for rebranding:** `src/config.js` (`SITE`) holds name, tagline, description, phone (display/tel/whatsapp variants), instagram, address (with `query`/lat/lng), and hours. Navbar, Footer, Hero, Visit, Reservation, and Testimonials all read from it — a new restaurant = edit this one file (plus photos in `/public`, menu items in `src/data/menu.js`, and the static SEO `<head>` in `index.html`). The About story paragraph is intentionally left as literal prose (clients rewrite it wholesale). The footer's compact hours line ("Mon–Sat · 12:00–23:00") is literal, not from `SITE.hours`, to keep its abbreviated format.
+
+**Reservation validation is hand-rolled** (`validateReservation` in `Reservation.jsx`), not Zod — Zod was removed to save ~62 KB gzip. It returns `{ success, errors, data }` like `safeParse`.
+
 **Content is data-driven:** menu items, section images, testimonials, and the broken-image fallback SVG all live in `src/data/menu.js`. Dish photos are hot-linked Unsplash URLs — verify a photo ID returns 200 before adding one (dead IDs have shipped before; `DishCard` has an `onError` fallback but hero/gallery images don't).
 
 **Menu page scrollspy** (`src/pages/Menu.jsx`): the sticky category nav tracks the first section in document order present in an in-view set — not "last entry that intersected", which mis-highlights after programmatic jumps.

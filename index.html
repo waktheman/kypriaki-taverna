@@ -3,8 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2B2B2B" />
+
+    <!--
+      ┌─────────────────────────────────────────────────────────────────┐
+      │  TEMPLATE: when reusing for a new restaurant, update the domain   │
+      │  below (SITE_URL) everywhere it appears, plus the title,          │
+      │  description, and the JSON-LD block further down.                 │
+      └─────────────────────────────────────────────────────────────────┘
+    -->
 
     <!-- Primary SEO -->
     <title>Kypriaki Taverna — Authentic Cypriot Dining in Paphos</title>
@@ -12,7 +22,14 @@
       name="description"
       content="Family recipes since 1962. Souvla over Cypriot charcoal, garden-fresh meze, and Commandaria under the Paphos sky. Reserve your table at Kypriaki Taverna."
     />
-    <link rel="canonical" href="https://kypriakitaverna.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://kypriaki-taverna.vercel.app/" />
+
+    <!-- Local business / geo -->
+    <meta name="geo.region" content="CY" />
+    <meta name="geo.placename" content="Paphos" />
+    <meta name="geo.position" content="34.7754;32.4245" />
+    <meta name="ICBM" content="34.7754, 32.4245" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="restaurant" />
@@ -22,10 +39,11 @@
       property="og:description"
       content="Family recipes since 1962. Souvla over Cypriot charcoal, garden-fresh meze, and Commandaria under the Paphos sky."
     />
-    <meta property="og:url" content="https://kypriakitaverna.com/" />
-    <meta property="og:image" content="https://kypriakitaverna.com/og-image.jpg" />
+    <meta property="og:url" content="https://kypriaki-taverna.vercel.app/" />
+    <meta property="og:image" content="https://kypriaki-taverna.vercel.app/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kypriaki Taverna — Authentic Cypriot dining in Paphos, est. 1962" />
     <meta property="og:locale" content="en_GB" />
 
     <!-- Twitter -->
@@ -35,7 +53,7 @@
       name="twitter:description"
       content="Family recipes since 1962. Souvla over Cypriot charcoal, garden-fresh meze, and Commandaria under the Paphos sky."
     />
-    <meta name="twitter:image" content="https://kypriakitaverna.com/og-image.jpg" />
+    <meta name="twitter:image" content="https://kypriaki-taverna.vercel.app/og-image.jpg" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,8 +71,8 @@
         "@type": "Restaurant",
         "name": "Kypriaki Taverna",
         "description": "Authentic Cypriot taverna in Paphos. Souvla over coal, garden-fresh meze, and Commandaria. Family recipes since 1962.",
-        "url": "https://kypriakitaverna.com/",
-        "image": "https://kypriakitaverna.com/og-image.jpg",
+        "url": "https://kypriaki-taverna.vercel.app/",
+        "image": "https://kypriaki-taverna.vercel.app/og-image.jpg",
         "servesCuisine": ["Cypriot", "Greek", "Mediterranean"],
         "priceRange": "€€",
         "telephone": "+35796239471",
@@ -86,7 +104,7 @@
         ],
         "acceptsReservations": "True",
         "foundingDate": "1962",
-        "menu": "https://kypriakitaverna.com/menu"
+        "menu": "https://kypriaki-taverna.vercel.app/menu"
       }
     </script>
   </head>

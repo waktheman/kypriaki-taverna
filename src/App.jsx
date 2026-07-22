@@ -18,7 +18,7 @@ export default function App() {
         : 'Kypriaki Taverna — Authentic Cypriot Dining in Paphos'
     const canonical = document.querySelector('link[rel="canonical"]')
     if (canonical) {
-      canonical.href = `https://kypriakitaverna.com${pathname === '/' ? '/' : pathname}`
+      canonical.href = `https://kypriaki-taverna.vercel.app${pathname === '/' ? '/' : pathname}`
     }
   }, [pathname])
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kypriakitaverna.com/sitemap.xml
+Sitemap: https://kypriaki-taverna.vercel.app/sitemap.xml

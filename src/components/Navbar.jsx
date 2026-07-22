@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { SITE } from '../config.js'
 
 const NAV_LINKS = [
   { label: 'About', hash: '#about' },
@@ -49,7 +50,7 @@ export default function Navbar() {
           className="font-display text-xl font-semibold tracking-tight text-cream"
           onClick={() => pathname === '/' && window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          Kypriaki<span className="text-terracotta">.</span>
+          {SITE.name}<span className="text-terracotta">.</span>
         </Link>
 
         {/* Desktop links */}

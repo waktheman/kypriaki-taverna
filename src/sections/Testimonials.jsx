@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import Reveal from '../components/Reveal.jsx'
 import { TESTIMONIALS } from '../data/menu.js'
+import { SITE } from '../config.js'
+
+const REVIEWS_URL = `https://www.google.com/maps/search/${`${SITE.fullName} ${SITE.address.locality}`.replace(/ /g, '+')}`
 
 function GoogleLogo({ className = 'h-3.5 w-3.5' }) {
   return (
@@ -107,7 +110,7 @@ export default function Testimonials() {
 
       <Reveal delay={300} className="mt-12 text-center">
         <a
-          href="https://www.google.com/maps/search/Kypriaki+Taverna+Paphos"
+          href={REVIEWS_URL}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 px-7 py-3.5 text-sm font-semibold text-charcoal transition-all duration-200 ease-premium hover:border-terracotta-deep hover:text-terracotta-deep"

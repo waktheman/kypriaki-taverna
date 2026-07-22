@@ -1,6 +1,7 @@
 import Reveal from '../components/Reveal.jsx'
 import LazyVideo from '../components/LazyVideo.jsx'
 import { IMAGES } from '../data/menu.js'
+import { SITE } from '../config.js'
 
 export default function Hero() {
   const scrollTo = (hash) => document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
@@ -37,7 +38,7 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-6 pb-24 pt-32 text-center">
         <Reveal as="p" className="text-xs font-semibold uppercase tracking-[0.35em] text-gold sm:text-sm">
-          Paphos · Cyprus · Est. 1962
+          {SITE.tagline}
         </Reveal>
 
         <Reveal as="h1" delay={120} className="mt-6 font-display text-6xl font-semibold leading-[0.95] sm:text-8xl">
@@ -50,8 +51,7 @@ export default function Hero() {
           delay={240}
           className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-cream/75 sm:text-lg"
         >
-          Authentic Cypriot traditions, modern touch. Souvla over coal, garden-fresh meze, and
-          Commandaria under the Paphos sky.
+          {SITE.description}
         </Reveal>
 
         <Reveal delay={360} className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">

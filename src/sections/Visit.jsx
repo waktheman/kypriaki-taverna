@@ -1,9 +1,7 @@
 import Reveal from '../components/Reveal.jsx'
+import { SITE } from '../config.js'
 
-const HOURS = [
-  { days: 'Monday – Saturday', hours: '12:00 – 23:00' },
-  { days: 'Sunday', hours: '12:00 – 22:00' },
-]
+const mapQuery = SITE.address.query.replace(/ /g, '+')
 
 export default function Visit() {
   return (
@@ -17,7 +15,7 @@ export default function Visit() {
           delay={100}
           className="mt-4 max-w-xl font-display text-4xl font-semibold leading-tight text-charcoal sm:text-5xl"
         >
-          Visit us <span className="italic text-sage">in Paphos.</span>
+          Visit us <span className="italic text-sage">in {SITE.address.locality}.</span>
         </Reveal>
 
         <div className="mt-14 grid gap-8 lg:grid-cols-5">
@@ -27,8 +25,8 @@ export default function Visit() {
                 response with X-Frame-Options and renders blank; this /maps/embed
                 endpoint is the frameable one. */}
             <iframe
-              title="Map to Kypriaki Taverna, Terpsithea Street, Paphos"
-              src="https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1sTerpsithea+Street,+Paphos+8011,+Cyprus!6i15"
+              title={`Map to ${SITE.fullName}, ${SITE.address.street}, ${SITE.address.locality}`}
+              src={`https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1s${mapQuery}!6i15`}
               className="h-80 w-full border-0 lg:h-full lg:min-h-[26rem]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -43,12 +41,12 @@ export default function Visit() {
                 Find us
               </h3>
               <address className="mt-3 text-lg font-medium not-italic leading-relaxed text-charcoal">
-                Terpsithea Street
+                {SITE.address.street}
                 <br />
-                Paphos 8011, Cyprus
+                {SITE.address.locality} {SITE.address.postalCode}, {SITE.address.country}
               </address>
               <a
-                href="https://www.google.com/maps/dir/?api=1&destination=Terpsithea+Street,+Paphos+8011,+Cyprus"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-terracotta-deep transition-colors duration-200 ease-premium hover:text-charcoal"
@@ -65,10 +63,10 @@ export default function Visit() {
                 Hours
               </h3>
               <dl className="mt-3 space-y-2">
-                {HOURS.map(({ days, hours }) => (
+                {SITE.hours.map(({ days, time }) => (
                   <div key={days} className="flex items-baseline justify-between gap-4 text-sm">
                     <dt className="text-charcoal/60">{days}</dt>
-                    <dd className="font-semibold text-charcoal">{hours}</dd>
+                    <dd className="font-semibold text-charcoal">{time}</dd>
                   </div>
                 ))}
               </dl>
@@ -83,10 +81,10 @@ export default function Visit() {
               </h3>
               <p className="mt-3">
                 <a
-                  href="tel:+35796239471"
+                  href={`tel:${SITE.phoneTel}`}
                   className="font-display text-2xl font-semibold text-gold transition-colors duration-200 ease-premium hover:text-cream"
                 >
-                  +357 96 239 471
+                  {SITE.phoneDisplay}
                 </a>
               </p>
               <p className="mt-1 text-sm text-cream/60">Calls &amp; WhatsApp, daily from 10:00</p>
